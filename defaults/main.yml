@@ -1,0 +1,12 @@
+---
+
+virtualbox_guest_obsolete_packages:
+    - virtualbox-guest-x11
+    - virtualbox-guest-additions
+    - virtualbox-guest-dkms
+
+force_virtbox_guest: False
+skip_reboot: False
+
+virtbox_iso: /usr/share/virtualbox/VBoxGuestAdditions.iso
+virtbox_method: iso

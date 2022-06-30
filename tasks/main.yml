@@ -23,7 +23,9 @@
 - name: Reboot if package was removed
   include_role:
     name: reboot
-  when: ansible_connection != 'local'
+  when:
+    - ansible_connection != 'local'
+    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]
 
 # - name: Reboot server to deactivate kernel modules
 #   fail:
@@ -96,4 +98,6 @@
 - name: Reboot if new virtualbox guest additions were compiled
   include_role:
     name: reboot
-  when: virtbox_guest_install is changed and not skip_reboot
+  when:
+    - virtbox_guest_install is changed and not skip_reboot
+    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]

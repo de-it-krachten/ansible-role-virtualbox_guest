@@ -23,7 +23,9 @@
 - name: Reboot if package was removed
   include_role:
     name: reboot
-  when: ansible_connection != 'local'
+  when:
+    - ansible_connection != 'local'
+    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]
 
 # - name: Reboot server to deactivate kernel modules
 #   fail:
@@ -50,8 +52,8 @@
   failed_when: False
   register: virtbox_guest_installed
 
-- name: Run code for {{ virtbox_method }}`
-  include: "{{ virtbox_method }}.yml"
+- name: Run code for {{ virtbox_method }}
+  include_tasks: "{{ virtbox_method }}.yml"
 
 - name: Get virtualbox guest version available # noqa 306
   shell: "{{ installer }} --info | awk '/^Identification:/ {print $3}'"
@@ -67,7 +69,8 @@
       version installed: "{{ virtbox_guest_installed.stdout }}"
       version available: "{{ virtbox_guest_available.stdout }}"
 
-- block:
+- name: compilation
+  block:
 
     - name: Compile & install virtualbox guest additions
       shell: |
@@ -96,4 +99,6 @@
 - name: Reboot if new virtualbox guest additions were compiled
   include_role:
     name: reboot
-  when: virtbox_guest_install is changed and not skip_reboot
+  when:
+    - virtbox_guest_install is changed and not skip_reboot
+    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]

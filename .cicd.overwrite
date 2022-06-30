@@ -17,6 +17,7 @@ platforms_add:
     image: fedora36
 
 molecule:
+  active: false
   platforms_add:
     - name: fedora35
       image: "geerlingguy/docker-fedora35-ansible:latest"

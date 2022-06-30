@@ -5,5 +5,5 @@ virtualbox_guest_packages:
   - build-essential
   - dkms
   # - linux-headers-{{ ansible_kernel }}
-  - linux-headers-amd64
+  - linux-headers-generic
   - p7zip-full

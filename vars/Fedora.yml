@@ -9,5 +9,6 @@ virtualbox_guest_packages:
   - make
   - bzip2
   - perl
+  - libxcrypt-compat
   - p7zip
   - p7zip-plugins

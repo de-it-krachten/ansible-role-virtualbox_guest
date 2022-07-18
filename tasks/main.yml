@@ -13,7 +13,6 @@
       paths:
         - 'vars'
 
-
 - name: Update all packages
   include_role:
     name: package
@@ -26,12 +25,12 @@
   when:
     - ansible_connection != 'local'
     - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]
+  tags: molecule-idempotence-notest
 
 # - name: Reboot server to deactivate kernel modules
 #   fail:
 #     msg: "Please reboot to deactivate kernel modules"
 #   when: virtbox_package is changed and ansible_connection == 'local'
-
 
 - name: Install build tools needed for compilation
   package:
@@ -52,10 +51,10 @@
   failed_when: False
   register: virtbox_guest_installed
 
-- name: Run code for {{ virtbox_method }}`
-  include: "{{ virtbox_method }}.yml"
+- name: Run code for {{ virtbox_method }}
+  include_tasks: "{{ virtbox_method }}.yml"
 
-- name: Get virtualbox guest version available # noqa 306
+- name: Get virtualbox guest version available  # noqa 306
   shell: "{{ installer }} --info | awk '/^Identification:/ {print $3}'"
   check_mode: False
   changed_when: False
@@ -69,15 +68,17 @@
       version installed: "{{ virtbox_guest_installed.stdout }}"
       version available: "{{ virtbox_guest_available.stdout }}"
 
-- block:
+- name: compilation
+  block:
 
     - name: Compile & install virtualbox guest additions
       shell: |
         { coproc tee { tee /tmp/virtbox.log ;} >&3 ;} 3>&1
          exec >&${tee[1]} 2>&1
-        {{ installer }}
+        REMOVE_INSTALLATION_DIR=0 {{ installer }}
       args:
         executable: /bin/bash
+      failed_when: virtbox_guest_install.rc == 1 or virtbox_guest_install.rc > 2
       register: virtbox_guest_install
       tags:
         - skip_ansible_lint
@@ -86,8 +87,8 @@
       debug:
         msg: "{{ virtbox_guest_install.stdout_lines }}"
 
-  when: virtbox_guest_installed.stdout|length == 0 or virtbox_guest_installed.stdout != virtbox_guest_available.stdout or force_virtbox_guest
-
+  when: virtbox_guest_installed.stdout|length == 0 or virtbox_guest_installed.stdout != virtbox_guest_available.stdout or force_virtbox_guest|bool
+  tags: molecule-idempotence-notest
 
 - name: Unmount again
   mount:
@@ -96,8 +97,8 @@
   when: virtbox_method == 'cd'
 
 - name: Reboot if new virtualbox guest additions were compiled
-  include_role:
-    name: reboot
+  reboot:
   when:
     - virtbox_guest_install is changed and not skip_reboot
+    - ansible_connection != 'local'
     - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]

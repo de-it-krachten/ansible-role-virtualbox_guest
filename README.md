@@ -5,24 +5,14 @@
 
 Compiles Virtualbox guest additions from source
 
+
 ## Platforms
 
 Supported platforms
 
-- Red Hat Enterprise Linux 7<sup>1</sup>
-- Red Hat Enterprise Linux 8<sup>1</sup>
-- Red Hat Enterprise Linux 9<sup>1</sup>
-- CentOS 7
-- RockyLinux 8
-- OracleLinux 8
-- AlmaLinux 8
-- AlmaLinux 9
-- Debian 10 (Buster)
 - Debian 11 (Bullseye)
-- Ubuntu 18.04 LTS
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
-- Fedora 35
 - Fedora 36
 
 Note:
@@ -31,15 +21,18 @@ Note:
 ## Role Variables
 ### defaults/main.yml
 <pre><code>
+# List of packages to remove
 virtualbox_guest_obsolete_packages:
     - virtualbox-guest-x11
     - virtualbox-guest-additions
     - virtualbox-guest-dkms
+    - virtualbox-guest-utils
 
 force_virtbox_guest: False
 skip_reboot: False
 
 virtbox_iso: /usr/share/virtualbox/VBoxGuestAdditions.iso
+
 virtbox_method: iso
 </pre></code>
 
@@ -103,7 +96,21 @@ virtualbox_guest_packages:
 <pre><code>
 - name: sample playbook for role 'virtualbox_guest'
   hosts: all
+  become: "{{ molecule['converge']['become'] | default('yes') }}"
   vars:
+    gnome_desktop_wayland: False
+    gnome_desktop_autologin_enable: True
+    gnome_desktop_autologin: vagrant
+    gnome_desktop_lock_disable: True
+    gnome_desktop_lock_timeout: 0
+  pre_tasks:
+    - name: Create 'remote_tmp'
+      file:
+        path: /root/.ansible/tmp
+        state: directory
+        mode: "0700"
+  roles:
+    - gnome_desktop
   tasks:
     - name: Include role 'virtualbox_guest'
       include_role:

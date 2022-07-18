@@ -1,0 +1,10 @@
+---
+
+- name: package
+  src: https://github.com/de-it-krachten/ansible-role-package.git
+  version: main
+  scm: git
+- name: reboot
+  src: https://github.com/de-it-krachten/ansible-role-reboot.git
+  version: main
+  scm: git

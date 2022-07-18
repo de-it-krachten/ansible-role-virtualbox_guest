@@ -52,8 +52,8 @@
   failed_when: False
   register: virtbox_guest_installed
 
-- name: Run code for {{ virtbox_method }}`
-  include: "{{ virtbox_method }}.yml"
+- name: Run code for {{ virtbox_method }}
+  include_tasks: "{{ virtbox_method }}.yml"
 
 - name: Get virtualbox guest version available # noqa 306
   shell: "{{ installer }} --info | awk '/^Identification:/ {print $3}'"
@@ -69,7 +69,8 @@
       version installed: "{{ virtbox_guest_installed.stdout }}"
       version available: "{{ virtbox_guest_available.stdout }}"
 
-- block:
+- name: compilation
+  block:
 
     - name: Compile & install virtualbox guest additions
       shell: |

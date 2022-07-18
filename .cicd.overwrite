@@ -6,3 +6,70 @@ generic:
   role_short: virtualbox_guest
   role_description: |
     Compiles Virtualbox guest additions from source
+
+# Supported platforms
+platforms:
+  rhel7:
+    ci: false
+    supported: false
+  rhel8:
+    ci: false
+    supported: false
+  rhel9:
+    ci: false
+    supported: false
+  centos7:
+    ci: true
+    supported: false
+  centos8:
+    ci: false
+    supported: false
+  centos8s:
+    ci: false
+    supported: false
+  centos9s:
+    ci: false
+    supported: false
+  rockylinux8:
+    ci: true
+    supported: false
+  rockylinux9:
+    ci: true
+    supported: false
+  oraclelinux8:
+    ci: true
+    supported: false
+  almalinux8:
+    ci: true
+    supported: false
+  almalinux9:
+    ci: true
+    supported: false
+  debian10:
+    ci: true
+    supported: true
+  debian11:
+    ci: true
+    supported: true
+  ubuntu1804:
+    ci: true
+    supported: false
+  ubuntu2004:
+    ci: true
+    supported: true
+  ubuntu2204:
+    ci: true
+    supported: true
+  fedora35:
+    ci: true
+    supported: true
+  fedora36:
+    ci: true
+    supported: true
+  alpine3:
+    ci: false
+    supported: false
+
+github:
+  fail_fast: false
+  molecule: false

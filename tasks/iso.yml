@@ -1,9 +1,9 @@
 ---
 
-- name: Delete directory /tmp/VBoxGuestAdditions
-  file:
-    path: /tmp/VBoxGuestAdditions
-    state: absent
+# - name: Delete directory /tmp/VBoxGuestAdditions
+#   file:
+#     path: /tmp/VBoxGuestAdditions
+#     state: absent
 
 - name: Create directory /tmp/VBoxGuestAdditions
   file:
@@ -18,15 +18,15 @@
     mode: "0644"
 
 - name: Extra ISO
-  command: 7z x -o/tmp/VBoxGuestAdditions /tmp/VBoxGuestAdditions.iso
+  command: 7z x -y -o/tmp/VBoxGuestAdditions /tmp/VBoxGuestAdditions.iso
   check_mode: false
   changed_when: false
 
-- name: Change permissions
+- name: Change permissions for installer
   file:
-    path: /tmp/VBoxGuestAdditions
+    path: /tmp/VBoxGuestAdditions/VBoxLinuxAdditions.run
     mode: '0755'
-    recurse: true
+  tags: molecule-idempotence-notest
 
 - name: Set installer location
   set_fact:

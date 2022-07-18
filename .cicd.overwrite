@@ -6,3 +6,195 @@ generic:
   role_short: virtualbox_guest
   role_description: |
     Compiles Virtualbox guest additions from source
+
+# Supported platforms
+platforms:
+  rhel7:
+    name: Red Hat Enterprise Linux 7
+    ci: false
+    supported: false
+    image: "dropveter/rhel7-ansible"
+    galaxy:
+      name: EL
+      version: 7
+  rhel8:
+    name: Red Hat Enterprise Linux 8
+    ci: false
+    supported: true
+    image: "dropveter/rhel8-ansible"
+    galaxy:
+      name: EL
+      version: 8
+  rhel9:
+    name: Red Hat Enterprise Linux 9
+    ci: false
+    supported: true
+    image: "dropveter/rhel9-ansible"
+    galaxy:
+      name: EL
+      version: 9
+  centos7:
+    name: CentOS 7
+    ci: false
+    supported: false
+    image: "geerlingguy/docker-centos7-ansible:latest"
+    box: "generic/centos7"
+    galaxy:
+      name: EL
+      version: 7
+  centos8:
+    name: CentOS 8
+    ci: false
+    supported: false
+    image: "geerlingguy/docker-centos8-ansible:latest"
+    box: "generic/centos7"
+    galaxy:
+      name: EL
+      version: 8
+  rockylinux8:
+    name: RockyLinux 8
+    ci: true
+    supported: true
+    image: "geerlingguy/docker-rockylinux8-ansible:latest"
+    box: "generic/rocky8"
+    galaxy:
+      name: EL
+      version: 8
+  oraclelinux8:
+    name: OracleLinux 8
+    ci: true
+    supported: true
+    image: "dropveter/oraclelinux8-ansible"
+    box: "generic/oracle8"
+    galaxy:
+      name: EL
+      version: 8
+  almalinux8:
+    name: AlmaLinux 8
+    ci: true
+    supported: true
+    image: "dropveter/almalinux8-ansible"
+    box: "generic/alma8"
+    galaxy:
+      name: EL
+      version: 8
+  almalinux9:
+    name: AlmaLinux 9
+    ci: true
+    supported: true
+    image: "dropveter/almalinux9-ansible"
+    box: "generic/alma9"
+    galaxy:
+      name: EL
+      version: 9
+  debian10:
+    name: Debian 10 (Buster)
+    ci: false
+    supported: false
+    image: "geerlingguy/docker-debian10-ansible:latest"
+    box: "generic/debian10"
+    galaxy:
+      name: Debian
+      version: buster
+  debian11:
+    name: Debian 11 (Bullseye)
+    ci: true
+    supported: true
+    image: "geerlingguy/docker-debian11-ansible:latest"
+    box: "generic/debian11"
+    galaxy:
+      name: Debian
+      version: bullseye
+  ubuntu1804:
+    name: Ubuntu 18.04 LTS
+    ci: false
+    supported: false
+    image: "geerlingguy/docker-ubuntu1804-ansible:latest"
+    box: "generic/ubuntu1804"
+    galaxy:
+      name: Ubuntu
+      version: 18.04
+  ubuntu2004:
+    name: Ubuntu 20.04 LTS
+    ci: true
+    supported: true
+    image: "geerlingguy/docker-ubuntu2004-ansible:latest"
+    box: "generic/ubuntu2004"
+    galaxy:
+      name: Ubuntu
+      version: 20.04
+  ubuntu2204:
+    name: Ubuntu 22.04 LTS
+    ci: true
+    supported: true
+    image: "geerlingguy/docker-ubuntu2204-ansible:latest"
+    box: "generic/ubuntu2204"
+    galaxy:
+      name: Ubuntu
+      version: 22.04
+  fedora35:
+    name: Fedora 35
+    ci: true
+    supported: true
+    image: "geerlingguy/docker-fedora35-ansible:latest"
+    box: "generic/fedora35"
+    galaxy:
+      name: Fedora
+      version: all
+  fedora36:
+    name: Fedora 36
+    ci: true
+    supported: true
+    image: "geerlingguy/docker-fedora36-ansible:latest"
+    box: "generic/fedora36"
+    galaxy:
+      name: Fedora
+      version: all
+  alpine3:
+    name: Alpine 3
+    ci: false
+    supported: false
+    image: "robertdebock/alpine:latest"
+    box: "generic/alpine312"
+    pre_build_image: false
+    galaxy:
+      name: Alpine
+      version: all
+
+molecule:
+  driver: vagrant
+  requirements:
+    roles_extra:
+      - gnome_desktop
+      - package
+      - reboot
+  prepare:
+    vars:
+      update_all: true
+  converge:
+    roles:
+      - gnome_desktop
+    vars:
+      gnome_desktop_wayland: false
+      gnome_desktop_autologin_enable: true
+      gnome_desktop_autologin: 'vagrant'
+      gnome_desktop_lock_disable: true
+      gnome_desktop_lock_timeout: '0'
+  host_vars:
+    virtualbox-guest-{{ platform.name }}-node1:
+      gnome_desktop_minimal: true
+  scenario:
+    test_sequence:
+      - dependency
+      - lint
+      - cleanup
+      - destroy
+      - syntax
+      - create
+      - prepare
+      - converge
+      # - idempotence
+      - side_effect
+      - verify
+      - cleanup
+      - destroy

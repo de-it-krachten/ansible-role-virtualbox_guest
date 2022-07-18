@@ -61,10 +61,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - distro: centos7
-            playbook: converge.yml
-            # continue_on_error: false
-            # failfast: true
           - distro: rockylinux8
             playbook: converge.yml
             # continue_on_error: false
@@ -81,15 +77,7 @@ jobs:
             playbook: converge.yml
             # continue_on_error: false
             # failfast: true
-          - distro: debian10
-            playbook: converge.yml
-            # continue_on_error: false
-            # failfast: true
           - distro: debian11
-            playbook: converge.yml
-            # continue_on_error: false
-            # failfast: true
-          - distro: ubuntu1804
             playbook: converge.yml
             # continue_on_error: false
             # failfast: true

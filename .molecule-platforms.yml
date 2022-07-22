@@ -1,0 +1,20 @@
+---
+
+- name: rockylinux8
+  box: generic/rocky8
+- name: oraclelinux8
+  box: generic/oracle8
+- name: almalinux8
+  box: generic/alma8
+- name: almalinux9
+  box: generic/alma9
+- name: debian11
+  box: generic/debian11
+- name: ubuntu2004
+  box: generic/ubuntu2004
+- name: ubuntu2204
+  box: generic/ubuntu2204
+- name: fedora35
+  box: generic/fedora35
+- name: fedora36
+  box: generic/fedora36

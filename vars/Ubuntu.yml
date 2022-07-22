@@ -1,0 +1,9 @@
+---
+
+# List of packages needed for compilation
+virtualbox_guest_packages:
+  - build-essential
+  - dkms
+  # - linux-headers-{{ ansible_kernel }}
+  - linux-headers-generic
+  - p7zip-full

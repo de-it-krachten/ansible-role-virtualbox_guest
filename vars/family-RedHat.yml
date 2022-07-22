@@ -1,0 +1,13 @@
+---
+
+# List of packages needed for compilation
+virtualbox_guest_packages:
+  - gcc
+  - kernel-devel
+  - kernel-headers
+  - dkms
+  - make
+  - bzip2
+  - perl
+  - p7zip
+  - p7zip-plugins

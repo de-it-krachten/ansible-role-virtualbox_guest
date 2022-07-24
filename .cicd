@@ -330,11 +330,6 @@ ci_templates:
     src: git/templates/gitignore
     dest: .gitignore
     force: false
-  molecule-ansible-lint:
-    src: molecule/templates/ansible-lint
-    dest: .ansible-lint-molecule
-    # force: no
-    when: molecule_active
   ansible-lint:
     src: ansible-lint
     dest: .ansible-lint

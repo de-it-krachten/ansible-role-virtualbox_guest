@@ -1,0 +1,113 @@
+---
+
+# Generic
+generic:
+  role: ansible-role-virtualbox_guest
+  role_short: virtualbox_guest
+  role_description: |
+    Compiles Virtualbox guest additions from source
+
+# Supported platforms
+platforms:
+  rhel7:
+    ci: false
+    supported: false
+  rhel8:
+    ci: false
+    supported: false
+  rhel9:
+    ci: false
+    supported: false
+  centos7:
+    ci: false
+    supported: false
+  centos8:
+    ci: false
+    supported: false
+  centos8s:
+    ci: false
+    supported: false
+  centos9s:
+    ci: false
+    supported: false
+  rockylinux8:
+    ci: false
+    supported: false
+  rockylinux9:
+    ci: false
+    supported: false
+  oraclelinux8:
+    ci: false
+    supported: false
+  almalinux8:
+    ci: false
+    supported: false
+  almalinux9:
+    ci: false
+    supported: false
+  debian10:
+    ci: false
+    supported: false
+  debian11:
+    ci: true
+    supported: true
+  ubuntu1804:
+    ci: false
+    supported: false
+  ubuntu2004:
+    ci: true
+    supported: true
+  ubuntu2204:
+    ci: true
+    supported: true
+  fedora35:
+    ci: false
+    supported: false
+  fedora36:
+    ci: true
+    supported: true
+  alpine3:
+    ci: false
+    supported: false
+
+github:
+  fail_fast: false
+  molecule: false
+
+molecule:
+  driver: vagrant
+  requirements:
+    roles_extra:
+      - gnome_desktop
+      - package
+      - reboot
+  prepare:
+    vars:
+      update_all: true
+  converge:
+    roles:
+      - gnome_desktop
+    vars:
+      gnome_desktop_wayland: false
+      gnome_desktop_autologin_enable: true
+      gnome_desktop_autologin: 'vagrant'
+      gnome_desktop_lock_disable: true
+      gnome_desktop_lock_timeout: '0'
+  host_vars:
+    virtualbox-guest-{{ platform.name }}-node1:
+      gnome_desktop_minimal: true
+  scenario:
+    test_sequence:
+      - dependency
+      - lint
+      - cleanup
+      - destroy
+      - syntax
+      - create
+      - prepare
+      - converge
+      # - idempotence
+      - side_effect
+      - verify
+      - cleanup
+      - destroy

@@ -1,0 +1,104 @@
+---
+
+- name: Load variables based on OS type
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_distribution }}.yml"
+        - "family-{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+        - "family-{{ ansible_os_family }}.yml"
+        - default.yml
+      paths:
+        - 'vars'
+
+- name: Update all packages
+  include_role:
+    name: package
+  vars:
+    package_mode: upgrade-verbose
+
+- name: Reboot if package was removed
+  include_role:
+    name: reboot
+  when:
+    - ansible_connection != 'local'
+    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]
+  tags: molecule-idempotence-notest
+
+# - name: Reboot server to deactivate kernel modules
+#   fail:
+#     msg: "Please reboot to deactivate kernel modules"
+#   when: virtbox_package is changed and ansible_connection == 'local'
+
+- name: Install build tools needed for compilation
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ virtualbox_guest_packages }}"
+
+- name: Remove distro provided packages
+  package:
+    name: "{{ virtualbox_guest_obsolete_packages }}"
+    state: absent
+  register: virtbox_package
+
+- name: Get installed virtualbox guest version # noqa 306
+  shell: modinfo vboxguest | awk '/^version:/ {print $2}'
+  check_mode: False
+  changed_when: False
+  failed_when: False
+  register: virtbox_guest_installed
+
+- name: Run code for {{ virtbox_method }}
+  include_tasks: "{{ virtbox_method }}.yml"
+
+- name: Get virtualbox guest version available  # noqa 306
+  shell: "{{ installer }} --info | awk '/^Identification:/ {print $3}'"
+  check_mode: False
+  changed_when: False
+  failed_when: False
+  register: virtbox_guest_available
+
+- name: Show virtualbox guest versions
+  debug:
+    msg:
+      installer: "{{ installer }}"
+      version installed: "{{ virtbox_guest_installed.stdout }}"
+      version available: "{{ virtbox_guest_available.stdout }}"
+
+- name: compilation
+  block:
+
+    - name: Compile & install virtualbox guest additions
+      shell: |
+        { coproc tee { tee /tmp/virtbox.log ;} >&3 ;} 3>&1
+         exec >&${tee[1]} 2>&1
+        REMOVE_INSTALLATION_DIR=0 {{ installer }}
+      args:
+        executable: /bin/bash
+      failed_when: virtbox_guest_install.rc == 1 or virtbox_guest_install.rc > 2
+      register: virtbox_guest_install
+      tags:
+        - skip_ansible_lint
+
+    - name: Display output of command
+      debug:
+        msg: "{{ virtbox_guest_install.stdout_lines }}"
+
+  when: virtbox_guest_installed.stdout|length == 0 or virtbox_guest_installed.stdout != virtbox_guest_available.stdout or force_virtbox_guest|bool
+  tags: molecule-idempotence-notest
+
+- name: Unmount again
+  mount:
+    state: absent
+    path: /mnt
+  when: virtbox_method == 'cd'
+
+- name: Reboot if new virtualbox guest additions were compiled
+  reboot:
+  when:
+    - virtbox_guest_install is changed and not skip_reboot
+    - ansible_connection != 'local'
+    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]

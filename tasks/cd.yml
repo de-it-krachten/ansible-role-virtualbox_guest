@@ -1,17 +1,19 @@
 ---
 
 - name: Define CD device
-  set_fact:
+  ansible.builtin.set_fact:
     cd: '/dev/sr0'
 
-- name: Recheck if CD/DVD is mounted # noqa 306
-  shell: df | awk '$1=="{{ cd }}" {print $NF}'
+- name: Recheck if CD/DVD is mounted  # noqa no-free-form
+  ansible.builtin.shell: |
+    set -o pipefail
+    df | awk '$1=="{{ cd }}" {print $NF}'
   check_mode: False
   changed_when: False
   register: mounted
 
 - name: Mount CD/DVD
-  mount:
+  ansible.posix.mount:
     src: "{{ cd }}"
     path: /mnt
     state: mounted
@@ -19,17 +21,19 @@
     opts: ro,noauto
   when: mounted.stdout|length == 0
 
-- name: Recheck if CD/DVD is mounted # noqa 306
-  shell: df | awk '$1=="{{ cd }}" {print $NF}'
+- name: Recheck if CD/DVD is mounted  # noqa no-free-form
+  ansible.builtin.shell: |
+    set -o pipefail
+    df | awk '$1=="{{ cd }}" {print $NF}'
   check_mode: False
   changed_when: False
   register: mounted
 
 - name: Fail if nothing found
-  fail:
+  ansible.builtin.fail:
     msg: "Unable to find virtualbox guest cd/dvd '{{ cd }}'"
   when: mounted.stdout|length == 0
 
 - name: Set installer location
-  set_fact:
+  ansible.builtin.set_fact:
     installer: "{{ mounted.stdout }}/VBoxLinuxAdditions.run"

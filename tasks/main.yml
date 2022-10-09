@@ -44,8 +44,10 @@
     state: absent
   register: virtbox_package
 
-- name: Get installed virtualbox guest version # noqa 306
-  ansible.builtin.shell: modinfo vboxguest | awk '/^version:/ {print $2}'
+- name: Get installed virtualbox guest version
+  ansible.builtin.shell: |
+    set -o pipefail
+    modinfo vboxguest | awk '/^version:/ {print $2}'
   check_mode: False
   changed_when: False
   failed_when: False
@@ -54,8 +56,10 @@
 - name: Run code for {{ virtbox_method }}
   ansible.builtin.include_tasks: "{{ virtbox_method }}.yml"
 
-- name: Get virtualbox guest version available  # noqa 306
-  ansible.builtin.shell: "{{ installer }} --info | awk '/^Identification:/ {print $3}'"
+- name: Get virtualbox guest version available
+  ansible.builtin.shell: |
+    set -o pipefail
+    "{{ installer }} --info | awk '/^Identification:/ {print $3}'"
   check_mode: False
   changed_when: False
   failed_when: False

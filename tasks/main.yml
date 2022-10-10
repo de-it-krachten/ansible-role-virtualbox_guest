@@ -1,7 +1,7 @@
 ---
 
 - name: Load variables based on OS type
-  include_vars: "{{ lookup('first_found', params) }}"
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -14,13 +14,13 @@
         - 'vars'
 
 - name: Update all packages
-  include_role:
+  ansible.builtin.include_role:
     name: package
   vars:
     package_mode: upgrade-verbose
 
 - name: Reboot if package was removed
-  include_role:
+  ansible.builtin.include_role:
     name: reboot
   when:
     - ansible_connection != 'local'
@@ -33,46 +33,52 @@
 #   when: virtbox_package is changed and ansible_connection == 'local'
 
 - name: Install build tools needed for compilation
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   loop: "{{ virtualbox_guest_packages }}"
 
 - name: Remove distro provided packages
-  package:
+  ansible.builtin.package:
     name: "{{ virtualbox_guest_obsolete_packages }}"
     state: absent
   register: virtbox_package
 
-- name: Get installed virtualbox guest version # noqa 306
-  shell: modinfo vboxguest | awk '/^version:/ {print $2}'
+- name: Get installed virtualbox guest version
+  ansible.builtin.shell: |
+    set -o pipefail
+    modinfo vboxguest | awk '/^version:/ {print $2}'
   check_mode: False
   changed_when: False
   failed_when: False
   register: virtbox_guest_installed
 
 - name: Run code for {{ virtbox_method }}
-  include_tasks: "{{ virtbox_method }}.yml"
+  ansible.builtin.include_tasks: "{{ virtbox_method }}.yml"
 
-- name: Get virtualbox guest version available  # noqa 306
-  shell: "{{ installer }} --info | awk '/^Identification:/ {print $3}'"
+- name: Get virtualbox guest version available
+  ansible.builtin.shell: |
+    set -o pipefail
+    "{{ installer }} --info | awk '/^Identification:/ {print $3}'"
   check_mode: False
   changed_when: False
   failed_when: False
   register: virtbox_guest_available
 
 - name: Show virtualbox guest versions
-  debug:
+  ansible.builtin.debug:
     msg:
       installer: "{{ installer }}"
       version installed: "{{ virtbox_guest_installed.stdout }}"
       version available: "{{ virtbox_guest_available.stdout }}"
 
-- name: compilation
+- name: Compilation
+  when: virtbox_guest_installed.stdout|length == 0 or virtbox_guest_installed.stdout != virtbox_guest_available.stdout or force_virtbox_guest|bool
+  tags: molecule-idempotence-notest
   block:
 
     - name: Compile & install virtualbox guest additions
-      shell: |
+      ansible.builtin.shell: |
         { coproc tee { tee /tmp/virtbox.log ;} >&3 ;} 3>&1
          exec >&${tee[1]} 2>&1
         REMOVE_INSTALLATION_DIR=0 {{ installer }}
@@ -84,20 +90,17 @@
         - skip_ansible_lint
 
     - name: Display output of command
-      debug:
+      ansible.builtin.debug:
         msg: "{{ virtbox_guest_install.stdout_lines }}"
 
-  when: virtbox_guest_installed.stdout|length == 0 or virtbox_guest_installed.stdout != virtbox_guest_available.stdout or force_virtbox_guest|bool
-  tags: molecule-idempotence-notest
-
 - name: Unmount again
-  mount:
+  ansible.posix.mount:
     state: absent
     path: /mnt
   when: virtbox_method == 'cd'
 
 - name: Reboot if new virtualbox guest additions were compiled
-  reboot:
+  ansible.builtin.reboot:
   when:
     - virtbox_guest_install is changed and not skip_reboot
     - ansible_connection != 'local'

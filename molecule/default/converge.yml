@@ -11,7 +11,7 @@
     gnome_desktop_lock_timeout: 0
   pre_tasks:
     - name: Create 'remote_tmp'
-      file:
+      ansible.builtin.file:
         path: /root/.ansible/tmp
         state: directory
         mode: "0700"
@@ -19,5 +19,5 @@
     - gnome_desktop
   tasks:
     - name: Include role 'ansible-role-virtualbox_guest'
-      include_role:
+      ansible.builtin.include_role:
         name: ansible-role-virtualbox_guest

@@ -6,28 +6,28 @@
 #     state: absent
 
 - name: Create directory /tmp/VBoxGuestAdditions
-  file:
+  ansible.builtin.file:
     path: /tmp/VBoxGuestAdditions
     state: directory
     mode: '0755'
 
 - name: Copy the guest additions ISO
-  copy:
+  ansible.builtin.copy:
     src: "{{ virtbox_iso }}"
     dest: /tmp/VBoxGuestAdditions.iso
     mode: "0644"
 
 - name: Extra ISO
-  command: 7z x -y -o/tmp/VBoxGuestAdditions /tmp/VBoxGuestAdditions.iso
+  ansible.builtin.command: 7z x -y -o/tmp/VBoxGuestAdditions /tmp/VBoxGuestAdditions.iso
   check_mode: false
   changed_when: false
 
 - name: Change permissions for installer
-  file:
+  ansible.builtin.file:
     path: /tmp/VBoxGuestAdditions/VBoxLinuxAdditions.run
     mode: '0755'
   tags: molecule-idempotence-notest
 
 - name: Set installer location
-  set_fact:
+  ansible.builtin.set_fact:
     installer: /tmp/VBoxGuestAdditions/VBoxLinuxAdditions.run

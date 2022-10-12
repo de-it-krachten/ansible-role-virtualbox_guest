@@ -1,2 +1,4 @@
 vars.yml
 molecule/default/molecule.yml
+*.bak
+.converted

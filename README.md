@@ -6,6 +6,16 @@
 Compiles Virtualbox guest additions from source
 
 
+
+## Dependencies
+
+#### Roles
+None
+
+#### Collections
+- community.general
+- ansible.posix
+
 ## Platforms
 
 Supported platforms
@@ -35,6 +45,7 @@ virtbox_iso: /usr/share/virtualbox/VBoxGuestAdditions.iso
 
 virtbox_method: iso
 </pre></code>
+
 
 ### vars/Fedora.yml
 <pre><code>
@@ -105,7 +116,7 @@ virtualbox_guest_packages:
     gnome_desktop_lock_timeout: 0
   pre_tasks:
     - name: Create 'remote_tmp'
-      file:
+      ansible.builtin.file:
         path: /root/.ansible/tmp
         state: directory
         mode: "0700"
@@ -113,6 +124,6 @@ virtualbox_guest_packages:
     - gnome_desktop
   tasks:
     - name: Include role 'virtualbox_guest'
-      include_role:
+      ansible.builtin.include_role:
         name: virtualbox_guest
 </pre></code>

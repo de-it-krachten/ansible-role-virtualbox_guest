@@ -77,7 +77,7 @@
       version available: "{{ virtbox_guest_available.stdout }}"
 
 - name: Compilation
-  when: virtbox_guest_installed.stdout|length == 0 or virtbox_guest_installed.stdout != virtbox_guest_available.stdout or force_virtbox_guest|bool
+  when: virtbox_guest_installed.stdout | length == 0 or virtbox_guest_installed.stdout != virtbox_guest_available.stdout or force_virtbox_guest | bool
   tags: molecule-idempotence-notest
   block:
 
@@ -88,6 +88,7 @@
         REMOVE_INSTALLATION_DIR=0 {{ installer }}
       args:
         executable: /bin/bash
+      changed_when: true
       failed_when: virtbox_guest_install.rc == 1 or virtbox_guest_install.rc > 2
       register: virtbox_guest_install
       tags:

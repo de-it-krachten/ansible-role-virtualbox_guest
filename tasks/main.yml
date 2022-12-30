@@ -48,6 +48,8 @@
   ansible.builtin.shell: |
     set -o pipefail
     modinfo vboxguest | awk '/^version:/ {print $2}'
+  args:
+    executable: /bin/bash
   check_mode: False
   changed_when: False
   failed_when: False
@@ -59,7 +61,9 @@
 - name: Get virtualbox guest version available
   ansible.builtin.shell: |
     set -o pipefail
-    "{{ installer }} --info | awk '/^Identification:/ {print $3}'"
+    {{ installer }} --info | awk '/^Identification:/ {print $3}'
+  args:
+    executable: /bin/bash
   check_mode: False
   changed_when: False
   failed_when: False

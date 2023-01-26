@@ -78,15 +78,15 @@ molecule:
   driver: vagrant
   requirements:
     roles_extra:
-      - gnome_desktop
-      - package
-      - reboot
+      - deitkrachten.gnome_desktop
+      - deitkrachten.package
+      - deitkrachten.reboot
   prepare:
     vars:
       update_all: true
   converge:
     roles:
-      - gnome_desktop
+      - deitkrachten.gnome_desktop
     vars:
       gnome_desktop_wayland: false
       gnome_desktop_autologin_enable: true

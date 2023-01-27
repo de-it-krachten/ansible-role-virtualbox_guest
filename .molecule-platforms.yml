@@ -8,5 +8,5 @@
   box: generic/ubuntu2004
 - name: ubuntu2204
   box: generic/ubuntu2204
-- name: fedora36
-  box: generic/fedora36
+- name: fedora37
+  box: generic/fedora37

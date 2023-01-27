@@ -24,7 +24,7 @@ Supported platforms
 - Debian 11 (Bullseye)
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
-- Fedora 36
+- Fedora 37
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -116,7 +116,7 @@ virtualbox_guest_packages:
     gnome_desktop_lock_disable: True
     gnome_desktop_lock_timeout: 0
   roles:
-    - gnome_desktop
+    - deitkrachten.gnome_desktop
   tasks:
     - name: Include role 'virtualbox_guest'
       ansible.builtin.include_role:

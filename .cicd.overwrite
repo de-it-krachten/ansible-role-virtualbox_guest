@@ -60,10 +60,10 @@ platforms:
   ubuntu2204:
     ci: true
     supported: true
-  fedora35:
+  fedora36:
     ci: false
     supported: false
-  fedora36:
+  fedora37:
     ci: true
     supported: true
   alpine3:
@@ -78,15 +78,15 @@ molecule:
   driver: vagrant
   requirements:
     roles_extra:
-      - gnome_desktop
-      - package
-      - reboot
+      - deitkrachten.gnome_desktop
+      - deitkrachten.package
+      - deitkrachten.reboot
   prepare:
     vars:
       update_all: true
   converge:
     roles:
-      - gnome_desktop
+      - deitkrachten.gnome_desktop
     vars:
       gnome_desktop_wayland: false
       gnome_desktop_autologin_enable: true

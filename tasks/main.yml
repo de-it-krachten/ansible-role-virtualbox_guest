@@ -15,13 +15,13 @@
 
 - name: Update all packages
   ansible.builtin.include_role:
-    name: package
+    name: deitkrachten.package
   vars:
     package_mode: upgrade-verbose
 
 - name: Reboot if package was removed
   ansible.builtin.include_role:
-    name: reboot
+    name: deitkrachten.reboot
   when:
     - ansible_connection != 'local'
     - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]

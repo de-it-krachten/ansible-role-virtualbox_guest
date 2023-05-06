@@ -24,7 +24,7 @@ Supported platforms
 - Debian 11 (Bullseye)
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
-- Fedora 36
+- Fedora 37
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -48,20 +48,26 @@ virtbox_method: iso
 </pre></code>
 
 
-### vars/Fedora.yml
+### vars/family-Debian.yml
 <pre><code>
 # List of packages needed for compilation
 virtualbox_guest_packages:
-  - gcc
-  - kernel-devel
-  - kernel-headers
+  - build-essential
   - dkms
-  - make
-  - bzip2
-  - perl
-  - libxcrypt-compat
-  - p7zip
-  - p7zip-plugins
+  # - linux-headers-{{ ansible_kernel }}
+  - linux-headers-amd64
+  - p7zip-full
+</pre></code>
+
+### vars/Ubuntu.yml
+<pre><code>
+# List of packages needed for compilation
+virtualbox_guest_packages:
+  - build-essential
+  - dkms
+  # - linux-headers-{{ ansible_kernel }}
+  - linux-headers-generic
+  - p7zip-full
 </pre></code>
 
 ### vars/family-RedHat.yml
@@ -79,26 +85,20 @@ virtualbox_guest_packages:
   - p7zip-plugins
 </pre></code>
 
-### vars/Ubuntu.yml
+### vars/Fedora.yml
 <pre><code>
 # List of packages needed for compilation
 virtualbox_guest_packages:
-  - build-essential
+  - gcc
+  - kernel-devel
+  - kernel-headers
   - dkms
-  # - linux-headers-{{ ansible_kernel }}
-  - linux-headers-generic
-  - p7zip-full
-</pre></code>
-
-### vars/family-Debian.yml
-<pre><code>
-# List of packages needed for compilation
-virtualbox_guest_packages:
-  - build-essential
-  - dkms
-  # - linux-headers-{{ ansible_kernel }}
-  - linux-headers-amd64
-  - p7zip-full
+  - make
+  - bzip2
+  - perl
+  - libxcrypt-compat
+  - p7zip
+  - p7zip-plugins
 </pre></code>
 
 
@@ -116,7 +116,7 @@ virtualbox_guest_packages:
     gnome_desktop_lock_disable: True
     gnome_desktop_lock_timeout: 0
   roles:
-    - gnome_desktop
+    - deitkrachten.gnome_desktop
   tasks:
     - name: Include role 'virtualbox_guest'
       ansible.builtin.include_role:

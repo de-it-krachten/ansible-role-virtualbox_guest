@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.1.1...v1.2.0) (2023-05-06)
+
+
+### Features
+
+* Move to namespaced role names ([b9965f8](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/b9965f83ac9f1ed845be3ce174e99fedd0f105f9))
+
 ## [1.1.1](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.1.0...v1.1.1) (2022-12-30)
 
 

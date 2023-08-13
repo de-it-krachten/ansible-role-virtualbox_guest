@@ -22,9 +22,10 @@ Supported platforms
 
 - OracleLinux 9
 - Debian 11 (Bullseye)
+- Debian 12 (Bookworm)
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
-- Fedora 37
+- Fedora 38
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms

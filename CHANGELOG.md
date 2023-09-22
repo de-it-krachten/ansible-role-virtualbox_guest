@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.2.0...v1.3.0) (2023-09-22)
+
+
+### Features
+
+* Update supported platforms & CI ([2e8f51c](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/2e8f51c074a0296fc6c73be7bfba1ebf94a0177c))
+
 # [1.2.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.1.1...v1.2.0) (2023-05-06)
 
 

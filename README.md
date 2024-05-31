@@ -13,7 +13,6 @@ Compiles Virtualbox guest additions from source
 None
 
 #### Collections
-- community.general
 - ansible.posix
 
 ## Platforms
@@ -25,7 +24,8 @@ Supported platforms
 - Debian 12 (Bookworm)
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
-- Fedora 38
+- Ubuntu 24.04 LTS
+- Fedora 40
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -60,17 +60,6 @@ virtualbox_guest_packages:
   - p7zip-full
 </pre></code>
 
-### vars/Ubuntu.yml
-<pre><code>
-# List of packages needed for compilation
-virtualbox_guest_packages:
-  - build-essential
-  - dkms
-  # - linux-headers-{{ ansible_kernel }}
-  - linux-headers-generic
-  - p7zip-full
-</pre></code>
-
 ### vars/family-RedHat.yml
 <pre><code>
 # List of packages needed for compilation
@@ -102,6 +91,17 @@ virtualbox_guest_packages:
   - p7zip-plugins
 </pre></code>
 
+### vars/Ubuntu.yml
+<pre><code>
+# List of packages needed for compilation
+virtualbox_guest_packages:
+  - build-essential
+  - dkms
+  # - linux-headers-{{ ansible_kernel }}
+  - linux-headers-generic
+  - p7zip-full
+</pre></code>
+
 
 
 ## Example Playbook
@@ -109,12 +109,12 @@ virtualbox_guest_packages:
 <pre><code>
 - name: sample playbook for role 'virtualbox_guest'
   hosts: all
-  become: "yes"
+  become: 'yes'
   vars:
-    gnome_desktop_wayland: False
-    gnome_desktop_autologin_enable: True
+    gnome_desktop_wayland: false
+    gnome_desktop_autologin_enable: true
     gnome_desktop_autologin: vagrant
-    gnome_desktop_lock_disable: True
+    gnome_desktop_lock_disable: true
     gnome_desktop_lock_timeout: 0
   roles:
     - deitkrachten.gnome_desktop

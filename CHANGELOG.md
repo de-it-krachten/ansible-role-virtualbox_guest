@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.3.0...v1.4.0) (2024-06-01)
+
+
+### Features
+
+* Add support for Ubuntu 24.04 LTS + Fedora 40 ([35fc008](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/35fc00804932956037d203bf6e832f39e01ac24c))
+
 # [1.3.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.2.0...v1.3.0) (2023-09-22)
 
 

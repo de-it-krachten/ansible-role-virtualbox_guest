@@ -201,8 +201,16 @@
   volumes:
     - /sys/fs/cgroup:/sys/fs/cgroup:rw
 - name: fedora40
-  ci: true
+  ci: false
   image: docker.io/geerlingguy/docker-fedora40-ansible:latest
+  privileged: true
+  pre_build_image: true
+  cgroupns_mode: host
+  volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:rw
+- name: fedora41
+  ci: true
+  image: docker.io/geerlingguy/docker-fedora41-ansible:latest
   privileged: true
   pre_build_image: true
   cgroupns_mode: host

@@ -61,6 +61,10 @@
   server_type: cx11
   image: fedora-39
 - name: fedora40
-  ci: true
+  ci: false
   server_type: cx11
   image: fedora-40
+- name: fedora41
+  ci: true
+  server_type: cx11
+  image: fedora-41

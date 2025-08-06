@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.5.0...v1.6.0) (2025-08-06)
+
+
+### Features
+
+* Add support for Debian 13 (Trixie) ([1edcad4](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/1edcad4c1725f4d5a082812aaeb62491605e6fe8))
+
 # [1.5.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.4.0...v1.5.0) (2024-12-29)
 
 

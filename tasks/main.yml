@@ -85,7 +85,7 @@
       ansible.builtin.shell: |
         { coproc tee { tee /tmp/virtbox.log ;} >&3 ;} 3>&1
          exec >&${tee[1]} 2>&1
-        REMOVE_INSTALLATION_DIR=0 {{ installer }}
+        REMOVE_INSTALLATION_DIR=0 {{ installer }} <<< $(echo yes)
       args:
         executable: /bin/bash
       changed_when: true

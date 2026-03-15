@@ -26,9 +26,11 @@ Supported platforms
 - Ubuntu 22.04 LTS
 - Ubuntu 24.04 LTS
 - Fedora 42
+- Fedora 43
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
+
 
 ## Role Variables
 ### defaults/main.yml
@@ -111,6 +113,7 @@ virtualbox_guest_packages:
   hosts: all
   become: 'yes'
   vars:
+    molecule_driver: '{{ lookup(''env'', ''MOLECULE_DRIVER_NAME'') }}'
     gnome_desktop_wayland: false
     gnome_desktop_autologin_enable: true
     gnome_desktop_autologin: vagrant

@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.6.0...v1.7.0) (2026-03-15)
+
+
+### Features
+
+* Added support for Fedora 43 ([b9ac045](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/b9ac045f382733cefb369878dc4424dcf92a5305))
+
 # [1.6.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.5.0...v1.6.0) (2025-08-06)
 
 

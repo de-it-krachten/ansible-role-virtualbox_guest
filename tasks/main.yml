@@ -24,7 +24,7 @@
     name: deitkrachten.reboot
   when:
     - ansible_connection != 'local'
-    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]
+    - ansible_facts.virtualization_type not in [ 'docker', 'container', 'containerd' ]
   tags: molecule-idempotence-notest
 
 # - name: Reboot server to deactivate kernel modules
@@ -109,4 +109,4 @@
   when:
     - virtbox_guest_install is changed and not skip_reboot
     - ansible_connection != 'local'
-    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]
+    - ansible_facts.virtualization_type not in [ 'docker', 'container', 'containerd' ]

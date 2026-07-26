@@ -5,10 +5,10 @@
   vars:
     params:
       files:
-        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ ansible_distribution }}.yml"
-        - "family-{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
-        - "family-{{ ansible_os_family }}.yml"
+        - "{{ ansible_facts.distribution }}-{{ ansible_facts.distribution_major_version }}.yml"
+        - "{{ ansible_facts.distribution }}.yml"
+        - "family-{{ ansible_facts.os_family }}-{{ ansible_facts.distribution_major_version }}.yml"
+        - "family-{{ ansible_facts.os_family }}.yml"
         - default.yml
       paths:
         - 'vars'
@@ -24,7 +24,7 @@
     name: deitkrachten.reboot
   when:
     - ansible_connection != 'local'
-    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]
+    - ansible_facts.virtualization_type not in [ 'docker', 'container', 'containerd' ]
   tags: molecule-idempotence-notest
 
 # - name: Reboot server to deactivate kernel modules
@@ -109,4 +109,4 @@
   when:
     - virtbox_guest_install is changed and not skip_reboot
     - ansible_connection != 'local'
-    - ansible_virtualization_type not in [ 'docker', 'container', 'containerd' ]
+    - ansible_facts.virtualization_type not in [ 'docker', 'container', 'containerd' ]

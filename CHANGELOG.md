@@ -1,3 +1,13 @@
+# [1.8.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.7.0...v1.8.0) (2026-07-26)
+
+
+### Features
+
+* Add support for ansible-core 2.20+ ([e942882](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/e942882f1b58817512f2bc9e86d6aa41df09236c))
+* Added support for Fedora 44 ([452d74b](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/452d74b8a85e39272bee58c5ed00dc999d065b8b))
+* Added support for Ubuntu 26.04 LTS ([17d6027](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/17d6027462c380f9775510857ecc279533560da5))
+* Drop support for Fedora 42 ([9c00e3a](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/9c00e3af3d0b2fb56413c0132aa1e3366812c8e3))
+
 # [1.7.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.6.0...v1.7.0) (2026-03-15)
 
 

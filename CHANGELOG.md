@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.8.0...v1.9.0) (2026-10-13)
+
+
+### Features
+
+* Drop support for Debian 11 (Bullseye) ([1a2812a](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/commit/1a2812ac3940b06526c0f194dfb322aebaed6506))
+
 # [1.8.0](https://github.com/de-it-krachten/ansible-role-virtualbox_guest/compare/v1.7.0...v1.8.0) (2026-07-26)
 
 

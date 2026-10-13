@@ -1,5 +1,4 @@
 ---
-
 galaxy_info:
   role_name: virtualbox_guest
   namespace: de_it_krachten
@@ -11,7 +10,6 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
-        - bullseye
         - bookworm
         - trixie
     - name: Ubuntu

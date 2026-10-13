@@ -19,7 +19,6 @@ None
 
 Supported platforms
 
-- Debian 11 (Bullseye)
 - Debian 12 (Bookworm)
 - Debian 13 (Trixie)
 - Ubuntu 20.04 LTS
